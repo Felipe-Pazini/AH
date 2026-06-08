@@ -1,0 +1,8 @@
+body {
+
+    max-width: 800px;
+    margin: auto;
+
+    height: 40px;
+    object-fit: contain;
+}

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Itens</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1d176d;
+            color: white;
+        }
+
+        header {
+            background-color: #ff9900;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #ffffff;
+        }
+
+        nav a {
+            color: black;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background-color: #1d176d;
+            color: white;
+        }
+
+   
+        .form-container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 40px auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #ff9900;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ffa600;
+            font-size: 1rem;
+            color: #333;
+        }
+
+
+        .file-upload {
+            border: 2px dashed #ff9900;
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+            background-color: rgba(255, 153, 0, 0.05);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #e08800;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Cadastrar itens</h1>
+    </header>
+
+    <nav>
+
+        <a href="inicio.html">Início</a>
+        <a href="tabela.html">Estoque</a>
+        <a href="sobre.html">Sobre nós</a>
+        <a href="contato.html">Contato</a>
+    </nav>
+
+    <main>
+        <div class="form-container">
+            <h2>Cadastrar Produto</h2>
+
+            <form action="#" method="POST" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="nome">Nome do Produto:</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: chave de fenda" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="eletronicos">Eletrônicos</option>
+
+                        <option value="ferramentas">Ferramentas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="preco">Preço (R$):</label>
+                    <input type="number" id="preco" name="preco" placeholder="Ex: 99.90" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="Quantidade">Quantidade:</label>
+                    <input type="number" id="Quantidade" name="Quantidade" placeholder="Ex: 10" step="0.01" required>
+                </div>
+
+
+
+                <button type="submit">Cadastrar Produto</button>
+            </form>
+        </div>
+    </main>
+<script>
+document.querySelector("form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const produto = {
+        nome: document.getElementById("nome").value,
+        categoria: document.getElementById("categoria").value,
+        preco: parseFloat(document.getElementById("preco").value),
+        quantidade: parseInt(document.getElementById("Quantidade").value)
+    };
+
+    try {
+        const resposta = await fetch("http://127.0.0.1:5000/produtos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(produto)
+        });
+
+        const dados = await resposta.json();
+
+        alert(dados.mensagem);
+        document.querySelector("form").reset();
+
+    } catch (erro) {
+        alert("Erro ao cadastrar produto");
+        console.error(erro);
+    }
+});
+</script>
+
+<script>
+    document.querySelector("form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+    
+        const produto = {
+            nome: document.getElementById("nome").value,
+            categoria: document.getElementById("categoria").value,
+            preco: parseFloat(document.getElementById("preco").value),
+            quantidade: parseInt(document.getElementById("Quantidade").value)
+        };
+    
+        try {
+            const resposta = await fetch("http://127.0.0.1:5000/produtos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(produto)
+            });
+    
+            const dados = await resposta.json();
+    
+            if (resposta.ok) {
+                alert(dados.mensagem);
+                document.querySelector("form").reset();
+            } else {
+                alert(dados.erro || "Erro desconhecido");
+            }
+    
+        } catch (erro) {
+            console.error(erro);
+            alert("Erro de conexão com o servidor");
+        }
+    });
+    </script>
+</body>
+
+</html>
